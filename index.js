@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 require('dotenv').config();
+const helmet = require("helmet");
 
 const index = require('./routes/index')
 
@@ -17,6 +18,7 @@ const port = process.env.PORT || 5000
 // middle ware to fetch data
 app.use(express.json())
 app.use(cors())
+app.use(helmet.crossOriginResourcePolicy({policy : "cross-origin"}))
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
