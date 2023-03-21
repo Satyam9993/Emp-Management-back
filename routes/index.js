@@ -5,9 +5,6 @@ const fetchUser = require('../middleware/fetchUser');
 const Emp = require('./employee');
 const User = require('./Auth');
 
-router.get('/', (req, res)=>{
-    res.send({"Hello": "world"});
-})
 router.post('/create-emp',fetchUser , Emp.createEmployee);
 router.post('/update-emp',fetchUser , Emp.updateEmployee);
 router.post('/delete-emp',fetchUser , Emp.deleteEmployee);
