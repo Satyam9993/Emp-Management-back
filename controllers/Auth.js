@@ -33,6 +33,7 @@ exports.register = async (req, res) => {
 // Loginng IN
 exports.login = async (req, res) => {
   try {
+    res.set('Access-Control-Allow-Origin', '*');
     const { email, password } = req.body;
     console.log(email, password);
     const user = await User.findOne({ email: email });
