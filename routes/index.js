@@ -2,15 +2,15 @@ const express = require('express');
 const router = express.Router();
 const fetchUser = require('../middleware/fetchUser');
 
-const Emp = require('./employee');
-const User = require('./Auth');
+const { createEmployee, updateEmployee, deleteEmployee, getAllEmployee } = require('../controllers/employee');
+const {login} = require('../controllers/Auth');
 
-router.post('/create-emp',fetchUser , Emp.createEmployee);
-router.post('/update-emp',fetchUser , Emp.updateEmployee);
-router.post('/delete-emp',fetchUser , Emp.deleteEmployee);
-router.get('/all', fetchUser, Emp.getAllEmployee);
+router.post('/create-emp',fetchUser , createEmployee);
+router.post('/update-emp',fetchUser , updateEmployee);
+router.post('/delete-emp',fetchUser , deleteEmployee);
+router.get('/all', fetchUser, getAllEmployee);
 
 // router.post('/signin', User.register);
-router.post('/login', User.login);
+router.post('/login', login);
 
 module.exports = router;
