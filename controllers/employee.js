@@ -12,6 +12,7 @@ exports.createEmployee = async (req, res) => {
         await Eid.findById({ _id: process.env.EMP_ID }).then(async (ID) => {
             emp = await Employee.create({
                 eId: (ID.eId + 1),
+                user : req.user.id,
                 name: req.body.name,
                 dob: new Date(req.body.dob),
                 department: req.body.department,
@@ -37,7 +38,6 @@ exports.createEmployee = async (req, res) => {
 exports.updateEmployee = async (req, res) => {
     try {
         const employee = await Employee.findById({_id : req.body.eId});
-        console.log(employee);
         if (!employee) {
             return res
                 .status(402)
@@ -50,7 +50,7 @@ exports.updateEmployee = async (req, res) => {
                 .json({ success: false, errmsg: "Some data is missing" });
         }
 
-        const emps = await Employee.findByIdAndUpdate({_id:req.body.eId}, {
+        const emps = await Employee.findOneAndUpdate({_id:req.body.eId, user : req.user.id}, {
             $set :{
                 name: req.body.name,
                 dob: new Date(req.body.dob),
@@ -71,14 +71,14 @@ exports.updateEmployee = async (req, res) => {
 
 exports.deleteEmployee = async (req, res) => {
     try {
-        const employee = await Employee.findById({_id : req.body.eId});
+        const employee = await Employee.findById({_id : req.body.eId, user: req.user.id});
         if (!employee) {
             return res
                 .status(402)
                 .json({ success: false, errmsg: "Some data is missing" });
         }
 
-        const emps = await Employee.findByIdAndDelete({_id:req.body.eId});
+        const emps = await Employee.findOneAndDelete({_id:req.body.eId});
         if(emps){
             res.status(200).send({ success: true });
         }
@@ -91,9 +91,8 @@ exports.deleteEmployee = async (req, res) => {
 
 exports.getAllEmployee = async (req, res) => {
     try {
-        const emps = await Employee.find();
+        const emps = await Employee.find({user : req.user.id});
         res.status(200).send({ "employees": emps });
-
     } catch (error) {
         console.log(error.message);
         res.status(500).send({ success: false, error: "server error" });

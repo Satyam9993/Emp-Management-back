@@ -39,6 +39,11 @@ const EmployeeSchema = new Schema({
         enum : ["Remote Location", "Contract Employee", "Full-Time"],
         default: "Full-Time"
     },
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'User',
+        required: true
+    },
     createdOn : {
         type: Date,
         default: Date.now 

@@ -7,11 +7,14 @@ exports.register = async (req, res) => {
   try {
     const {
       email,
+      name,
+      picture,
       password
     } = req.body;
     if (
       !email ||
-      !password
+      !password||
+      !name
     ) {
       res.status(404).send({ msg: "Data is missing" });
       return;
@@ -20,8 +23,10 @@ exports.register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
     const newUser = new User({
-      email,
-      password: passwordHash
+      email : email,
+      password: passwordHash,
+      name : name,
+      picture : picture
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
